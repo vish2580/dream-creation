@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Featuring Our Events Works · Dream Creations</title>
+    <meta
+      name="description"
+      content="Featuring our events works | Dream Creations — Curating luxury weddings, high-octane live concerts, corporate conclaves, and grand celebrations across India."
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .projects-filter-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        justify-content: center;
+        margin: 2.5rem 0 3.5rem;
+      }
+      .filter-btn {
+        padding: 0.6rem 1.4rem;
+        border-radius: 999px;
+        background: rgba(22, 19, 14, 0.75);
+        border: 1px solid rgba(212, 175, 55, 0.35);
+        color: #f3f3f3;
+        font-family: "gilroy-medium", var(--sans);
+        font-size: 13.5px;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .filter-btn:hover,
+      .filter-btn.active {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.35), rgba(184, 134, 11, 0.5));
+        border-color: #ffd700;
+        color: #ffffff;
+        box-shadow: 0 0 16px rgba(212, 175, 55, 0.35);
+        transform: translateY(-2px);
+      }
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 2rem;
+        max-width: 1240px;
+        margin: 0 auto 5rem;
+        padding: 0 1.5rem;
+      }
+      .project-card-item {
+        background: linear-gradient(155deg, rgba(20, 17, 13, 0.85) 0%, rgba(8, 7, 5, 0.95) 100%);
+        border: 1px solid rgba(212, 175, 55, 0.28);
+        border-radius: 14px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+        position: relative;
+      }
+      .project-card-item:hover {
+        transform: translateY(-6px);
+        border-color: rgba(255, 215, 0, 0.75);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), 0 0 25px rgba(212, 175, 55, 0.25);
+      }
+      .project-thumb {
+        position: relative;
+        width: 100%;
+        height: 240px;
+        overflow: hidden;
+      }
+      .project-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .project-card-item:hover .project-thumb img {
+        transform: scale(1.06);
+      }
+      .project-tag {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        padding: 0.35rem 0.85rem;
+        background: rgba(10, 8, 6, 0.88);
+        border: 1px solid rgba(212, 175, 55, 0.5);
+        border-radius: 999px;
+        font-family: "gilroy-bold", var(--sans);
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #fae082;
+        backdrop-filter: blur(8px);
+      }
+      .project-content {
+        padding: 1.75rem;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+      .project-hashtag {
+        font-family: "gilroy-bold", var(--sans);
+        font-size: 1.35rem;
+        color: #fff;
+        margin: 0 0 0.4rem;
+        letter-spacing: -0.01em;
+      }
+      .project-venue {
+        font-family: "gilroy-medium", var(--sans);
+        font-size: 12.5px;
+        color: #d4af37;
+        margin: 0 0 0.85rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .project-desc {
+        font-family: "gilroy-regular", var(--sans);
+        font-size: 14.5px;
+        line-height: 1.6;
+        color: rgba(243, 243, 243, 0.85);
+        margin: 0 0 1.25rem;
+        flex-grow: 1;
+      }
+      .project-specs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-top: 1rem;
+      }
+      .project-spec-chip {
+        font-size: 11.5px;
+        color: rgba(250, 224, 130, 0.9);
+        background: rgba(255, 255, 255, 0.04);
+        padding: 0.25rem 0.65rem;
+        border-radius: 4px;
+        letter-spacing: 0.04em;
+      }
+      .stats-strip {
+        max-width: 1100px;
+        margin: 0 auto 5rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        padding: 2.5rem 1.5rem;
+        background: linear-gradient(145deg, rgba(20, 17, 13, 0.7), rgba(8, 7, 5, 0.9));
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        border-radius: 16px;
+        text-align: center;
+      }
+      .stat-num {
+        font-family: "gilroy-bold", var(--sans);
+        font-size: clamp(2rem, 3.5vw, 2.8rem);
+        color: #fae082;
+        line-height: 1;
+        margin-bottom: 0.4rem;
+      }
+      .stat-lbl {
+        font-family: "gilroy-medium", var(--sans);
+        font-size: 12.5px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.75);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="site-header">
+      <div class="header-left">
+        <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+          <div class="menu-bars" aria-hidden="true">
+            <span class="bar bar-top"></span>
+            <span class="bar bar-mid"></span>
+            <span class="bar bar-bot"></span>
+          </div>
+          <span class="menu-label">Menu</span>
+        </button>
+      </div>
+      <div class="header-center">
+        <a href="index.html" aria-label="Dream Creations home">
+          <img src="logo/dream-creations-logo.png" alt="Dream Creations Logo" />
+        </a>
+      </div>
+      <div class="header-right">
+        <a href="contact-us.html" class="btn-book-now" aria-label="Book Now">
+          <span class="btn-3d-box">
+            <span class="btn-text">Book Now</span>
+            <span class="btn-sparkle" aria-hidden="true">✦</span>
+          </span>
+        </a>
+      </div>
+    </header>
+
+    <!-- NAVIGATION DRAWER -->
+    <nav class="nav-drawer" id="nav-drawer" aria-label="Primary Navigation">
+      <div class="nav-drawer-inner">
+        <div class="nav-drawer-links">
+          <a href="index.html">Home</a>
+          <a href="about-us.html">About Us</a>
+          <a href="projects.html" class="active">Projects</a>
+          <a href="faqs.html">FAQ</a>
+          <a href="blogs.html">Blogs</a>
+          <a href="contact-us.html">Contact Us</a>
+        </div>
+        <div class="nav-drawer-divider" aria-hidden="true"></div>
+        <div class="nav-drawer-contact">
+          <span>📞 <a href="tel:+919144191442">+91 91441 91442</a></span>
+          <span>✉ <a href="mailto:dreamcreations511@gmail.com">dreamcreations511@gmail.com</a></span>
+          <span>📍 Siliguri, West Bengal</span>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <!-- PAGE HERO -->
+      <section class="page-hero">
+        <p class="eyebrow" style="letter-spacing:0.16em;text-transform:uppercase;font-size:12px;color:#d4af37;opacity:0.9">
+          ESTD 2020 • INDIA • FEATURING OUR EVENTS WORKS
+        </p>
+        <h1>Featuring Our<br /><span class="serif">Events Works</span><span class="dot">.</span></h1>
+        <p class="prose" style="margin-top:1.25rem;max-width:740px;">
+          At <strong>Dream Creations</strong>, we take immense pride in delivering meticulously planned and flawlessly executed events across India. From grand destination weddings to high-stakes corporate summits and Sunburn musical productions, explore our signature works crafted with emotion and grandeur.
+        </p>
+      </section>
+
+      <!-- STATS STRIP -->
+      <div class="stats-strip">
+        <div>
+          <div class="stat-num">500+</div>
+          <div class="stat-lbl">Events Executed</div>
+        </div>
+        <div>
+          <div class="stat-num">7+</div>
+          <div class="stat-lbl">Years Of Experience</div>
+        </div>
+        <div>
+          <div class="stat-num">100%</div>
+          <div class="stat-lbl">In-House Production</div>
+        </div>
+        <div>
+          <div class="stat-num">99.8%</div>
+          <div class="stat-lbl">Client Satisfaction</div>
+        </div>
+      </div>
+
+      <!-- FILTER BAR -->
+      <div class="projects-filter-bar">
+        <button class="filter-btn active" data-filter="all">All Works</button>
+        <button class="filter-btn" data-filter="wedding">Luxury Weddings</button>
+        <button class="filter-btn" data-filter="concert">Live Concerts &amp; Productions</button>
+        <button class="filter-btn" data-filter="corporate">Corporate Conclaves</button>
+        <button class="filter-btn" data-filter="mandap">Mandaps &amp; Stage Design</button>
+      </div>
+
+      <!-- PROJECTS SHOWCASE GRID -->
+      <section class="projects-grid" id="projects-container">
+        <!-- 1. #DIPANSHUkiDIVYANI -->
+        <article class="project-card-item" data-category="wedding mandap">
+          <div class="project-thumb">
+            <span class="project-tag">Luxury Wedding</span>
+            <img src="images/dc-photos/ifs07774.jpg" alt="#DIPANSHUkiDIVYANI Royal Palace Mandap" />
+          </div>
+          <div class="project-content">
+            <h2 class="project-hashtag">#DIPANSHUkiDIVYANI</h2>
+            <div class="project-venue">📍 Hotel Mechi Crown &amp; Royal Lawns | Siliguri</div>
+            <p class="project-desc">
+              A grand 40-foot golden palace mandap with royal pillars, 500+ warm crystal chandeliers, a bespoke fireworks Baraat entry, and dedicated hospitality for over 1,200 guests.
+            </p>
+            <div class="project-specs">
+              <span class="project-spec-chip">Royal Palace Mandap</span>
+              <span class="project-spec-chip">Pyrotechnic Baraat</span>
+              <span class="project-spec-chip">1,200+ Guests</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2. #DHIRAJxAYOSHEE -->
+        <article class="project-card-item" data-category="wedding">
+          <div class="project-thumb">
+            <span class="project-tag">Engagement &amp; Sangeet</span>
+            <img src="images/dc-photos/dsc_5401.jpg" alt="#DHIRAJxAYOSHEE Royal Floral Stage" />
+          </div>
+          <div class="project-content">
+            <h2 class="project-hashtag">#DHIRAJxAYOSHEE</h2>
+            <div class="project-venue">📍 Luxury Heritage Banquet | West Bengal</div>
+            <p class="project-desc">
+              Bespoke engagement gala featuring cascading crimson floral canopies, dynamic beam laser architecture, acoustic precision staging, and a custom couple lounge.
+            </p>
+            <div class="project-specs">
+              <span class="project-spec-chip">Floral Architecture</span>
+              <span class="project-spec-chip">Laser Beam Grid</span>
+              <span class="project-spec-chip">Couple Staging</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 3. #PINTUkiPEPSI -->
+        <article class="project-card-item" data-category="wedding">
+          <div class="project-thumb">
+            <span class="project-tag">Pastel Haldi &amp; Carnival</span>
+            <img src="images/dc-photos/dsc08740.jpg" alt="#PINTUkiPEPSI Whimsical Pastel Stage" />
+          </div>
+          <div class="project-content">
+            <h2 class="project-hashtag">#PINTUkiPEPSI</h2>
+            <div class="project-venue">📍 Mittal Garden | Siliguri</div>
+            <p class="project-desc">
+              Whimsical fairytale celebration with unicorn art installations, pastel floral tunnels, interactive cold-smoke foggers, and a vibrant color splash celebration.
+            </p>
+            <div class="project-specs">
+              <span class="project-spec-chip">Carnival Theming</span>
+              <span class="project-spec-chip">Pastel Florals</span>
+              <span class="project-spec-chip">Rain Dance Arena</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4. #SHIVAM&RISHITA -->
+        <article class="project-card-item" data-category="wedding mandap">
+          <div class="project-thumb">
+            <span class="project-tag">Vedic Mandap</span>
+            <img src="images/dc-photos/ifs07981.jpg" alt="#SHIVAM&RISHITA Vedic Rose Mandap" />
+          </div>
+          <div class="project-content">
+            <h2 class="project-hashtag">#SHIVAM&amp;RISHITA</h2>
+            <div class="project-venue">📍 Udaan Hotels &amp; Banquets</div>
+            <p class="project-desc">
+              Sacred Vedic wedding mandap swathed in thousands of fragrant red roses, traditional jasmine strings, and classical live shehnai symphony for auspicious pheras.
+            </p>
+            <div class="project-specs">
+              <span class="project-spec-chip">Vedic Chuppah</span>
+              <span class="project-spec-chip">Red Rose Portal</span>
+              <span class="project-spec-chip">Phera Coordination</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 5. #PRIYA&RAHUL -->
+        <article class="project-card-item" data-category="wedding">
+          <div class="project-thumb">
+            <span class="project-tag">Open-Air Reception</span>
+            <img src="images/dc-photos/dsc08698.jpg" alt="#PRIYA&RAHUL Silk Canopy Reception" />
+          </div>
+          <div class="project-content">
+            <h2 class="project-hashtag">#PRIYA&amp;RAHUL</h2>
+            <div class="project-venue">📍 Lemon Tree Hotel Lawn</div>
+            <p class="project-desc">
+              Geometric red and ivory silk ceiling drapes framing a starlit banquet lawn, 360-degree illuminated gourmet dining zones, and a royal sofa throne stage.
+            </p>
+            <div class="project-specs">
+              <span class="project-spec-chip">Silk Canopy</span>
+              <span class="project-spec-chip">Starlit Courtyard</span>
+              <span class="project-spec-chip">Royal Throne Setup</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 6. SUNBURN LIVE SPECTACLE -->
+        <article class="project-card-item" data-category="concert">
+          <div class="project-thumb">
+            <span class="project-tag">Live Concert</span>
+            <img src="images/dc-photos/ifs07006.jpg" alt="Sunburn Live Musical Spectacle" />
+          </div>
+          <div class="project-content">
+            <h2 class="project-hashtag">Sunburn Musical Spectacle</h2>
+            <div class="project-venue">📍 Mega Arena Grounds | Eastern India</div>
+            <p class="project-desc">
+              Electrifying 80,000-watt line-array sound architecture, synchronized multi-colored laser grid, CO2 cryo jets, and robust crowd barrier logistics for 15,000+ music fans.
+            </p>
+            <div class="project-specs">
+              <span class="project-spec-chip">Concert Acoustics</span>
+              <span class="project-spec-chip">CO2 Cryo Jets</span>
+              <span class="project-spec-chip">15,000+ Crowd Control</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 7. LEADERSHIP & INDUSTRY SUMMIT -->
+        <article class="project-card-item" data-category="corporate">
+          <div class="project-thumb">
+            <span class="project-tag">Corporate Conclave</span>
+            <img src="images/dc-photos/dsc09524.jpg" alt="Leadership & Industry Summit" />
+          </div>
+          <div class="project-content">
+            <h2 class="project-hashtag">Leadership &amp; Industry Summit</h2>
+            <div class="project-venue">📍 ITC Fortune Executive Ballroom</div>
+            <p class="project-desc">
+              Annual executive conclave with seamless hybrid AV streaming, high-definition curved LED mainstage, dignitary protocol handling, and executive networking lounges.
+            </p>
+            <div class="project-specs">
+              <span class="project-spec-chip">Curved 4K LED Wall</span>
+              <span class="project-spec-chip">Dignitary Protocol</span>
+              <span class="project-spec-chip">Hybrid Streaming</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 8. #PEEKAY25 & #BRIJESH&KRITI -->
+        <article class="project-card-item" data-category="wedding">
+          <div class="project-thumb">
+            <span class="project-tag">Royal Baraat Gateway</span>
+            <img src="images/dc-photos/ifs05887.jpg" alt="Royal Baraat Floral Gateway" />
+          </div>
+          <div class="project-content">
+            <h2 class="project-hashtag">#PEEKAY25 &amp; #BRIJESH&amp;KRITI</h2>
+            <div class="project-venue">📍 Barsana Palace</div>
+            <p class="project-desc">
+              200ft fresh blossom entryway tunnel, heritage brass torch procession, royal elephant welcome ceremony, and synchronized cold pyrotechnic stage reveals.
+            </p>
+            <div class="project-specs">
+              <span class="project-spec-chip">200ft Floral Tunnel</span>
+              <span class="project-spec-chip">Brass Mashaal Entry</span>
+              <span class="project-spec-chip">Cold Pyro Show</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 9. #NITISH&MEHEK & #HARSH&SUPRABHA -->
+        <article class="project-card-item" data-category="wedding mandap">
+          <div class="project-thumb">
+            <span class="project-tag">Poolside Sangeet</span>
+            <img src="images/dc-photos/dsc08952.jpg" alt="Palace Banquet Stage" />
+          </div>
+          <div class="project-content">
+            <h2 class="project-hashtag">#NITISH&amp;MEHEK &amp; #HARSH&amp;SUPRABHA</h2>
+            <div class="project-venue">📍 Sagar Residency Poolside</div>
+            <p class="project-desc">
+              Floating glass dance floor suspended over water, glowing chandeliers, live celebrity percussionist performance, and bespoke midnight dessert lounge.
+            </p>
+            <div class="project-specs">
+              <span class="project-spec-chip">Floating Glass Stage</span>
+              <span class="project-spec-chip">Water Surface Lighting</span>
+              <span class="project-spec-chip">Celebrity Artist</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 10. #PIYUSH&DEEPSHIKA & #TARUN&MANISHA -->
+        <article class="project-card-item" data-category="wedding mandap">
+          <div class="project-thumb">
+            <span class="project-tag">Royal Emerald Reception</span>
+            <img src="images/dc-photos/dsc09606.jpg" alt="Emerald Velvet Wedding Tunnel" />
+          </div>
+          <div class="project-content">
+            <h2 class="project-hashtag">#PIYUSH&amp;DEEPSHIKA &amp; #TARUN&amp;MANISHA</h2>
+            <div class="project-venue">📍 Uttar Banga Marwari Palace</div>
+            <p class="project-desc">
+              Lavish emerald velvet grand entrance tunnel, antique gold chandeliers, royal sofa throne lockup, and high-stakes catering protocol handling.
+            </p>
+            <div class="project-specs">
+              <span class="project-spec-chip">Emerald Velvet Tunnel</span>
+              <span class="project-spec-chip">Antique Gold Chandeliers</span>
+              <span class="project-spec-chip">VIP Hospitality</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- CALL TO ACTION BANNER -->
+      <section class="section" style="text-align:center;padding:4rem 1.5rem 6rem;border-top:1px solid rgba(255,255,255,0.08);">
+        <p class="eyebrow" style="letter-spacing:0.14em;text-transform:uppercase;font-size:12px;color:#d4af37;">
+          START YOUR JOURNEY WITH DREAM CREATIONS
+        </p>
+        <h2 class="section-title">Ready To Plan Your Event<span class="dot">?</span></h2>
+        <p class="section-sub" style="max-width:620px;margin:0 auto 2rem;">
+          Connect with our creative event directors today to transform your dream wedding, corporate summit, or concert into an unforgettable celebration.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:1.25rem;">
+          <a href="contact-us.html" class="btn-book-now">
+            <span class="btn-3d-box">
+              <span class="btn-text">Book Free Consultation</span>
+              <span class="btn-sparkle" aria-hidden="true">✦</span>
+            </span>
+          </a>
+          <a href="tel:+919144191442" class="pill" style="color:#fae082;border-color:rgba(212,175,55,0.5);">
+            📞 Call +91 91441 91442
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-grid">
+        <div>
+          <h2>DREAM <span class="serif">Creations</span><br />Turning Dreams Into Memorable Events</h2>
+          <div class="contact-chips">
+            <a href="mailto:dreamcreations511@gmail.com">dreamcreations511@gmail.com</a>
+            <a href="tel:+919144191442">+91 91441 91442</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <span class="col-head">Navigation</span>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about-us.html">About Us</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="faqs.html">FAQs</a></li>
+            <li><a href="blogs.html">Blogs</a></li>
+            <li><a href="contact-us.html">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <span class="col-head">Offices &amp; Workspaces</span>
+          <p>Siliguri, West Bengal · North Bengal · Pan India</p>
+          <p style="margin-top:0.75rem;opacity:0.65;font-size:12px;">© 2026 Dream Creations. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- INTERACTIVE SCRIPT -->
+    <script>
+      // Menu drawer toggle
+      const toggle = document.querySelector(".menu-toggle");
+      const drawer = document.getElementById("nav-drawer");
+      if (toggle && drawer) {
+        toggle.addEventListener("click", () => {
+          const isOpen = drawer.classList.toggle("open");
+          toggle.setAttribute("aria-expanded", String(isOpen));
+        });
+        drawer.querySelectorAll("a").forEach((a) => {
+          a.addEventListener("click", () => {
+            drawer.classList.remove("open");
+            toggle.setAttribute("aria-expanded", "false");
+          });
+        });
+      }
+
+      // Filter tabs functionality
+      const filterBtns = document.querySelectorAll(".filter-btn");
+      const projectCards = document.querySelectorAll(".project-card-item");
+
+      filterBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          filterBtns.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          const filter = btn.getAttribute("data-filter");
+
+          projectCards.forEach((card) => {
+            const categories = card.getAttribute("data-category") || "";
+            if (filter === "all" || categories.includes(filter)) {
+              card.style.display = "flex";
+              setTimeout(() => {
+                card.style.opacity = "1";
+                card.style.transform = "translateY(0)";
+              }, 20);
+            } else {
+              card.style.opacity = "0";
+              card.style.transform = "translateY(15px)";
+              setTimeout(() => {
+                card.style.display = "none";
+              }, 250);
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
+
