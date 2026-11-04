@@ -1,0 +1,11 @@
+Emotion Design static clone
+
+1. Unzip this folder onto your Desktop.
+2. Open a terminal in the "site" folder and run:
+   python3 -m http.server 8766
+3. Visit http://127.0.0.1:8766/
+
+compare-screenshots/ holds live-vs-clone images.
+rea-setup.md is the REA install note.
+
+This zip is the local copy. The cloud agent was left in place until you confirm this file is on your computer.

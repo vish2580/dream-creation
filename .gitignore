@@ -1,0 +1,14 @@
+# Temporary diagnostic & scratch scripts
+scratch/
+site/scratch/
+
+# Large screen recording files
+*.mp4
+
+# OS / Editor artifacts
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+.vscode/
+.idea/
