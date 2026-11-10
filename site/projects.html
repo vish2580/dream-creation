@@ -39,11 +39,11 @@
       }
       .projects-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-        gap: 2rem;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+        gap: 1.5rem;
         max-width: 1240px;
         margin: 0 auto 5rem;
-        padding: 0 1.5rem;
+        padding: 0 1.25rem;
       }
       .project-card-item {
         background: linear-gradient(155deg, rgba(20, 17, 13, 0.85) 0%, rgba(8, 7, 5, 0.95) 100%);
@@ -136,11 +136,12 @@
       }
       .stats-strip {
         max-width: 1100px;
-        margin: 0 auto 5rem;
+        width: calc(100% - 2rem);
+        margin: 0 auto 4rem;
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.5rem;
-        padding: 2.5rem 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
+        gap: 1.25rem;
+        padding: 2rem 1.25rem;
         background: linear-gradient(145deg, rgba(20, 17, 13, 0.7), rgba(8, 7, 5, 0.9));
         border: 1px solid rgba(212, 175, 55, 0.3);
         border-radius: 16px;

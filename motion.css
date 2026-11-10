@@ -704,30 +704,38 @@ html.lenis, html.lenis body {
   letter-spacing: 0.04em;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .service-card {
-    width: min(280px, 76vw);
+    width: min(250px, 68vw);
+    top: 50%;
   }
   .service-col-left {
-    top: 20%;
+    top: 17%;
     left: 0;
     right: 0;
     justify-content: center;
+    padding: 0 1rem;
   }
   .service-col-right {
-    top: 80%;
+    top: 83%;
     left: 0;
     right: 0;
     justify-content: center;
+    padding: 0 1rem;
   }
   .service-line-item {
-    padding: 0.5rem 1.15rem;
+    padding: 0.5rem 1.05rem;
+    max-width: 90vw;
+    white-space: normal;
+    text-align: center;
+    justify-content: center;
   }
   .service-line-item h2 {
-    font-size: clamp(1.1rem, 4vw, 20px);
+    font-size: clamp(1rem, 4.2vw, 19px);
+    line-height: 1.2;
   }
   .stage-outline-svc {
-    font-size: clamp(2.8rem, 14vw, 72px);
+    font-size: clamp(2.6rem, 13vw, 72px);
     -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
   }
   .impact-overlay-content {
@@ -735,11 +743,14 @@ html.lenis, html.lenis body {
     justify-content: center;
     gap: 1.5rem;
     text-align: center;
-    padding: 0 1.5rem;
+    padding: 0 1.25rem;
   }
   .impact-lead-quote {
     text-align: center;
     max-width: 100%;
+  }
+  .impact-lead-quote p {
+    font-size: clamp(1.35rem, 5.5vw, 24px);
   }
   .impact-stats-cluster {
     flex-direction: row;
@@ -747,9 +758,16 @@ html.lenis, html.lenis body {
     justify-content: center;
     gap: 1.25rem;
   }
+  .odometer-wrap {
+    font-size: clamp(2rem, 8vw, 38px);
+    justify-content: center;
+  }
   .impact-strip .icard {
-    width: 220px;
-    height: 310px;
+    width: 210px;
+    height: 300px;
+  }
+  .projects {
+    padding: 3.5rem 1.25rem 4rem;
   }
 }
 
@@ -814,7 +832,7 @@ html.lenis, html.lenis body {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: clamp(2.5rem, 5vh, 4.5rem) 2rem 2rem;
+  padding: clamp(5rem, 8.5vh, 6rem) 2rem 2rem;
   overflow: hidden;
   background: transparent;
 }

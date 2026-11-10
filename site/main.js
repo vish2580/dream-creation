@@ -163,7 +163,7 @@
   const stepRow = document.querySelector(".step-row");
   const stage = document.querySelector(".hero-stage");
 
-  const isMobileHero = window.innerWidth <= 768;
+  const isMobileHero = window.innerWidth <= 900;
   const heroCollageImgs = gsap.utils.toArray(
     isMobileHero ? ".hero-collage img.mobile-only" : ".hero-collage img.desktop-only"
   );
@@ -442,7 +442,7 @@
 
   // Hero Mouse Movement & Velocity Stretchiness Animation (0:10 to 0:12 in video)
   const setupHeroMouseMovement = () => {
-    const isMobile = window.innerWidth <= 768;
+    const isMobile = window.innerWidth <= 900;
     const imgs = gsap.utils.toArray(
       isMobile ? ".hero-collage img.mobile-only" : ".hero-collage img.desktop-only"
     );
@@ -1076,10 +1076,8 @@
   const awRight = document.querySelector(".awards-title .aw-right");
   const awTitle = document.querySelector(".awards-title");
 
-  if (awards && awardCards.length && !reduce) {
-    const isMobileAwards = window.innerWidth <= 768;
-
-    // Pin the awards block directly so subsequent sections NEVER overlap or bleed
+  if (awards && awardCards.length && !reduce && window.innerWidth > 900) {
+    // Pin the awards block directly on desktop so subsequent sections NEVER overlap or bleed
     const awardsTl = gsap.timeline({
       scrollTrigger: {
         trigger: ".awards-block",
@@ -1092,7 +1090,6 @@
     });
 
     // Realistic card stack initial configuration (cards stacked together in center deck)
-    // ac4 (red), ac3 (green), ac2 (teal), ac1 (yellow on top)
     const initialStack = [
       { xPercent: -50, y: 48, rot: -10, scale: 0.92 },
       { xPercent: -50, y: 36, rot: -6,  scale: 0.94 },
@@ -1103,23 +1100,14 @@
     ];
 
     // Broad rainbow arc coordinates for all 6 testimonial slides
-    const fanParams = isMobileAwards
-      ? [
-          { xPercent: -150, y: 35, rot: -18, scale: 0.85 },
-          { xPercent: -90,  y: 12, rot: -10, scale: 0.88 },
-          { xPercent: -40,  y: -5, rot: -3,  scale: 0.90 },
-          { xPercent: 10,   y: -5, rot: 3,   scale: 0.90 },
-          { xPercent: 60,   y: 12, rot: 10,  scale: 0.88 },
-          { xPercent: 110,  y: 35, rot: 18,  scale: 0.85 },
-        ]
-      : [
-          { xPercent: -230, y: 70,  rot: -22, scale: 0.96 },
-          { xPercent: -145, y: 20,  rot: -13, scale: 0.98 },
-          { xPercent: -65,  y: -15, rot: -4,  scale: 1.0 },
-          { xPercent: 15,   y: -15, rot: 4,   scale: 1.0 },
-          { xPercent: 95,   y: 20,  rot: 13,  scale: 0.98 },
-          { xPercent: 180,  y: 70,  rot: 22,  scale: 0.96 },
-        ];
+    const fanParams = [
+      { xPercent: -230, y: 70,  rot: -22, scale: 0.96 },
+      { xPercent: -145, y: 20,  rot: -13, scale: 0.98 },
+      { xPercent: -65,  y: -15, rot: -4,  scale: 1.0 },
+      { xPercent: 15,   y: -15, rot: 4,   scale: 1.0 },
+      { xPercent: 95,   y: 20,  rot: 13,  scale: 0.98 },
+      { xPercent: 180,  y: 70,  rot: 22,  scale: 0.96 },
+    ];
 
     awardCards.forEach((card, i) => {
       const init = initialStack[i] || { xPercent: -50, y: 0, rot: 0, scale: 1 };
@@ -1192,19 +1180,19 @@
   }
 
   // ---------------------------------------------------------------------------
-  // 12. Trusted By & Design Process
+  // 12. Trusted By (Our Partners in Success) & Design Process
   // ---------------------------------------------------------------------------
-  const logoImgs = gsap.utils.toArray(".logo-row img");
-  if (logoImgs.length && !reduce) {
-    gsap.from(logoImgs, {
+  const partnerCards = gsap.utils.toArray(".partners-logo-grid .partner-card");
+  if (partnerCards.length && !reduce) {
+    gsap.from(partnerCards, {
       scrollTrigger: {
         trigger: ".trusted",
-        start: "top 80%",
+        start: "top 82%",
       },
-      y: 35,
+      y: 28,
       opacity: 0,
-      stagger: 0.08,
-      duration: 0.8,
+      stagger: 0.045,
+      duration: 0.7,
       ease: "power2.out",
     });
   }
@@ -1304,8 +1292,20 @@
     });
   }
 
-  // Refresh ScrollTrigger once everything is mounted
+  // Refresh ScrollTrigger once everything is mounted & scroll to URL hash if present
   setTimeout(() => {
-    ScrollTrigger.refresh();
-  }, 500);
+    if (typeof ScrollTrigger !== "undefined") ScrollTrigger.refresh();
+    if (window.location.hash) {
+      const target = document.querySelector(window.location.hash);
+      if (target) {
+        const prevBehavior = document.documentElement.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior = "auto";
+        const top = target.getBoundingClientRect().top + window.scrollY;
+        if (lenis) lenis.scrollTo(top, { immediate: true, force: true });
+        window.scrollTo({ top, behavior: "instant" });
+        document.documentElement.style.scrollBehavior = prevBehavior;
+        if (typeof ScrollTrigger !== "undefined") ScrollTrigger.update();
+      }
+    }
+  }, 550);
 })();
