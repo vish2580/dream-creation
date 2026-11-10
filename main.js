@@ -170,6 +170,7 @@
   const cardRotations = [-2.5, 3.2, -1.8, 2.4, -3.0, 1.8, -2.2, 2.8, -1.5, 0];
 
   let heroIntroCompleted = false;
+  let heroScrollTriggerInitialized = false;
   let introTl = null;
 
   // Prepare layout IMMEDIATELY so nothing flashes or appears prematurely
@@ -441,7 +442,7 @@
   });
 
   // Hero Mouse Movement & Velocity Stretchiness Animation (0:10 to 0:12 in video)
-  const setupHeroMouseMovement = () => {
+  function setupHeroMouseMovement() {
     const isMobile = window.innerWidth <= 900;
     const imgs = gsap.utils.toArray(
       isMobile ? ".hero-collage img.mobile-only" : ".hero-collage img.desktop-only"
@@ -538,8 +539,7 @@
   // ---------------------------------------------------------------------------
   // 5. Hero ScrollTrigger Pinned Scrub & Split (0:10 to 0:12 in video)
   // ---------------------------------------------------------------------------
-  let heroScrollTriggerInitialized = false;
-  const setupHeroScrollTrigger = () => {
+  function setupHeroScrollTrigger() {
     if (heroScrollTriggerInitialized || reduce) return;
     heroScrollTriggerInitialized = true;
 
@@ -1198,7 +1198,7 @@
   }
 
   // ---------------------------------------------------------------------------
-  // 13. The Grand Closer Red Split Curtains ("Let's Create Stories Together")
+  // 13. The Grand Closer Red Split Curtains ("DREAM CREATIONS: TURNING YOUR DREAMS...")
   // ---------------------------------------------------------------------------
   const closer = document.getElementById("closer");
   const leftDoor = document.querySelector(".red-split .half.left");
@@ -1209,56 +1209,29 @@
     // Initial states: doors open outside screen
     gsap.set(leftDoor, { xPercent: -100 });
     gsap.set(rightDoor, { xPercent: 100 });
-    if (toTopBtn) gsap.set(toTopBtn, { scale: 0, opacity: 0 });
+    if (toTopBtn) gsap.set(toTopBtn, { xPercent: -50, yPercent: -50, scale: 0, opacity: 0 });
 
     const closerTl = gsap.timeline({
       scrollTrigger: {
         trigger: ".closer",
-        start: "top top",
+        start: "top 60%",
         end: "bottom bottom",
-        scrub: 1,
+        scrub: 0.35,
       },
     });
 
-    // From 25% of scroll travel to 75%, doors slide in from left & right
-    closerTl.to(leftDoor, { xPercent: 0, ease: "power2.inOut", duration: 0.6 }, 0.25);
-    closerTl.to(rightDoor, { xPercent: 0, ease: "power2.inOut", duration: 0.6 }, 0.25);
+    // Slide red curtains shut smoothly as closer fills viewport, locking cleanly at 100% bottom
+    closerTl.to(leftDoor, { xPercent: 0, ease: "power2.inOut", duration: 0.85 }, 0);
+    closerTl.to(rightDoor, { xPercent: 0, ease: "power2.inOut", duration: 0.85 }, 0);
 
-    // To Top button pops in when doors meet
+    // Pop in "Top ↑" button cleanly below curtain tagline
     if (toTopBtn) {
       closerTl.to(
         toTopBtn,
-        { scale: 1, opacity: 1, ease: "back.out(2)", duration: 0.25 },
-        0.72
+        { xPercent: -50, yPercent: -50, scale: 1, opacity: 1, ease: "back.out(1.8)", duration: 0.35 },
+        0.65
       );
     }
-
-    // Direct scroll listener ensuring red curtains are firmly closed at document end
-    let isCurtainClosed = false;
-    const handleBottomScroll = () => {
-      const sy = window.scrollY || window.pageYOffset;
-      const docH = document.documentElement.scrollHeight;
-      const winH = window.innerHeight;
-      const atBottom = sy + winH >= docH - 120;
-
-      if (atBottom && !isCurtainClosed) {
-        isCurtainClosed = true;
-        gsap.to(leftDoor, { xPercent: 0, duration: 0.85, ease: "power3.out", overwrite: "auto" });
-        gsap.to(rightDoor, { xPercent: 0, duration: 0.85, ease: "power3.out", overwrite: "auto" });
-        if (toTopBtn) {
-          gsap.to(toTopBtn, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2)", overwrite: "auto" });
-        }
-      } else if (!atBottom && isCurtainClosed && sy + winH < docH - 450) {
-        isCurtainClosed = false;
-        gsap.to(leftDoor, { xPercent: -100, duration: 0.7, ease: "power3.in", overwrite: "auto" });
-        gsap.to(rightDoor, { xPercent: 100, duration: 0.7, ease: "power3.in", overwrite: "auto" });
-        if (toTopBtn) {
-          gsap.to(toTopBtn, { scale: 0, opacity: 0, duration: 0.3, ease: "power2.in", overwrite: "auto" });
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleBottomScroll, { passive: true });
   }
 
   // Scroll to top with Lenis

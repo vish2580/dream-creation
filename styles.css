@@ -94,7 +94,6 @@ body {
   font-family: var(--sans);
   font-size: 16px;
   line-height: 1.45;
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 img,
@@ -1526,16 +1525,18 @@ textarea {
 
 /* Footer / contact */
 .footer {
-  padding: 5rem 2rem 4rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  min-height: 900px;
-  background: #000;
+  padding: 5.5rem 1.5rem 5rem;
+  border-top: 1px solid rgba(212, 175, 55, 0.22);
+  min-height: auto;
+  background: transparent;
+  position: relative;
+  z-index: 5;
 }
 .footer-grid {
-  max-width: 1100px;
+  max-width: 1140px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1.05fr;
   gap: 3rem;
   align-items: start;
 }
@@ -1544,12 +1545,136 @@ textarea {
   flex-direction: column;
   gap: 2rem;
 }
+.footer-eyebrow {
+  margin: 0 0 0.45rem;
+  font-family: "gilroy-bold", var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #fae082;
+}
 .footer-group h3 {
-  margin: 0 0 0.75rem;
+  margin: 0 0 1.25rem;
+  font-family: "gilroy-bold", var(--sans);
+  font-size: clamp(1.75rem, 2.5vw, 2.35rem);
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.15;
+}
+.contact-channels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.contact-pill {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.95rem 1.2rem;
+  background: linear-gradient(145deg, rgba(22, 19, 14, 0.85), rgba(10, 8, 6, 0.95));
+  border: 1px solid rgba(212, 175, 55, 0.32);
+  border-radius: 14px;
+  text-decoration: none;
+  color: #ffffff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.28s ease,
+              box-shadow 0.28s ease;
+}
+.contact-pill:hover {
+  transform: translateY(-2px);
+  border-color: rgba(250, 224, 130, 0.85);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.75), 0 0 16px rgba(212, 175, 55, 0.25);
+}
+.contact-pill.cp-whatsapp {
+  background: linear-gradient(145deg, rgba(14, 34, 22, 0.82), rgba(8, 18, 12, 0.94));
+  border-color: rgba(37, 211, 102, 0.42);
+}
+.contact-pill.cp-whatsapp:hover {
+  border-color: #25D366;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.75), 0 0 16px rgba(37, 211, 102, 0.25);
+}
+.cp-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 1.25rem;
+  background: rgba(212, 175, 55, 0.14);
+  border: 1px solid rgba(212, 175, 55, 0.32);
+  flex-shrink: 0;
+}
+.contact-pill.cp-whatsapp .cp-icon {
+  background: rgba(37, 211, 102, 0.16);
+  border-color: rgba(37, 211, 102, 0.4);
+}
+.cp-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.cp-label {
+  font-family: "gilroy-bold", var(--sans);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fae082;
+}
+.contact-pill.cp-whatsapp .cp-label {
+  color: #4ade80;
+}
+.cp-val {
+  font-family: "gilroy-medium", var(--sans);
+  font-size: clamp(0.92rem, 3.2vw, 1.05rem);
+  color: #ffffff;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.social-tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+}
+.social-tag {
+  padding: 0.5rem 1.05rem;
+  border-radius: 999px;
+  background: rgba(22, 19, 14, 0.8);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  font-family: "gilroy-bold", var(--sans);
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fae082;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+.social-tag:hover {
+  background: rgba(212, 175, 55, 0.22);
+  border-color: #fae082;
+  color: #ffffff;
+}
+.address-card {
+  padding: 1.15rem 1.25rem;
+  background: linear-gradient(145deg, rgba(20, 17, 13, 0.78), rgba(10, 8, 6, 0.92));
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: 14px;
+}
+.address-card .addr-tag {
+  margin: 0 0 0.4rem;
+  font-family: "gilroy-bold", var(--sans);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fae082;
+}
+.address-card .addr-text {
+  margin: 0;
   font-family: "gilroy-regular", var(--sans);
   font-size: 14px;
-  font-weight: 400;
-  opacity: 0.85;
+  line-height: 1.6;
+  color: rgba(255, 252, 246, 0.85);
 }
 .footer-group .pill {
   margin-top: 0;
@@ -1575,29 +1700,65 @@ textarea {
 }
 .contact-form {
   display: grid;
-  gap: 1.35rem;
+  gap: 1.15rem;
+  padding: 2.25rem 2rem;
+  background: linear-gradient(145deg, rgba(22, 19, 14, 0.88), rgba(10, 8, 6, 0.96));
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 20px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 235, 170, 0.15);
+}
+.form-title {
+  margin: 0;
+  font-family: "gilroy-bold", var(--sans);
+  font-size: clamp(1.35rem, 2vw, 1.75rem);
+  color: #fae082;
+}
+.form-sub {
+  margin: -0.6rem 0 0.4rem;
+  font-size: 14px;
+  color: rgba(255, 252, 246, 0.72);
 }
 .contact-form label {
   display: grid;
   gap: 0.45rem;
-  font-size: 13px;
+  font-family: "gilroy-medium", var(--sans);
+  font-size: 12.5px;
+  letter-spacing: 0.05em;
+  color: rgba(255, 252, 246, 0.85);
 }
 .contact-form input,
 .contact-form textarea {
   width: 100%;
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 0;
-  padding: 0.55rem 0;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+  padding: 0.72rem 0.95rem;
+  color: #ffffff;
   outline: none;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #fae082;
+  background: rgba(212, 175, 55, 0.06);
 }
 .contact-form textarea {
-  min-height: 72px;
+  min-height: 84px;
   resize: vertical;
 }
 .contact-form .pill {
   justify-self: start;
+  margin-top: 0.5rem;
+  background: linear-gradient(135deg, #d4af37 0%, #fae082 50%, #b8860b 100%);
+  color: #0d0b08;
+  border: none;
+  font-family: "gilroy-bold", var(--sans);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.85rem;
+  cursor: pointer;
+}
   margin-top: 0.5rem;
 }
 
@@ -2060,7 +2221,7 @@ textarea {
 }
 .blogs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
   gap: 2rem;
   margin-top: 3rem;
 }
@@ -3410,20 +3571,38 @@ body:not(.home-page) .footer {
     max-height: 48px;
   }
 
-  /* Closing Curtain & Footer on Mobile */
-  .closer {
-    height: 175vh !important;
-    min-height: 980px;
+  /* Remove View Details buttons from mobile Projects view */
+  .project-row .pill {
+    display: none !important;
   }
-  .closer-sticky {
+  .project-row {
+    padding: 1.5rem 0;
+    grid-template-columns: 44px 1fr;
+    gap: 0.75rem;
+  }
+  .project-row .num {
+    font-size: 28px;
+  }
+
+  /* Bottom Contact & Closing Curtain on Mobile (Zero extra scroll after curtain) */
+  .footer {
+    padding: 3.5rem 1.1rem 3.5rem !important;
+  }
+  .footer-grid {
+    gap: 2.25rem;
+  }
+  .contact-form {
+    padding: 1.6rem 1.2rem;
+  }
+  .closer {
     height: 100vh !important;
     height: 100dvh !important;
-    position: sticky !important;
-    top: 0;
+    min-height: 540px !important;
+    overflow: hidden !important;
   }
-  .closer .footer {
-    padding: 2rem 1.15rem !important;
-    min-height: auto !important;
+  .closer-sticky {
+    height: 100% !important;
+    position: relative !important;
   }
   .red-split .half.left {
     padding-right: 0.35rem;
@@ -3439,6 +3618,11 @@ body:not(.home-page) .footer {
   }
   .red-split .s-line.line-2 {
     font-size: clamp(0.8rem, 3.6vw, 1.25rem) !important;
+  }
+  .to-top {
+    top: 76% !important;
+    width: 72px !important;
+    height: 72px !important;
   }
 
   /* About Us Mobile Refinements */
