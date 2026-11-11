@@ -1202,17 +1202,19 @@
   }
 
   // ---------------------------------------------------------------------------
-  // 13. The Grand Closer Red Split Curtains ("DREAM CREATIONS: TURNING YOUR DREAMS...")
+  // 13. The Grand Closer Red Split Curtains (Dream Creations Logo & Centered Tagline)
   // ---------------------------------------------------------------------------
   const closer = document.getElementById("closer");
   const leftDoor = document.querySelector(".red-split .half.left");
   const rightDoor = document.querySelector(".red-split .half.right");
+  const curtainTagline = document.getElementById("curtain-center-tagline");
   const toTopBtn = document.getElementById("to-top");
 
   if (closer && leftDoor && rightDoor && !reduce) {
     // Initial states: doors open outside screen
     gsap.set(leftDoor, { xPercent: -100 });
     gsap.set(rightDoor, { xPercent: 100 });
+    if (curtainTagline) gsap.set(curtainTagline, { y: 18, opacity: 0 });
     if (toTopBtn) gsap.set(toTopBtn, { xPercent: -50, yPercent: -50, scale: 0, opacity: 0 });
 
     const closerTl = gsap.timeline({
@@ -1227,6 +1229,15 @@
     // Slide red curtains shut smoothly as closer fills viewport, locking cleanly at 100% bottom
     closerTl.to(leftDoor, { xPercent: 0, ease: "power2.inOut", duration: 0.85 }, 0);
     closerTl.to(rightDoor, { xPercent: 0, ease: "power2.inOut", duration: 0.85 }, 0);
+
+    // Fade in centered gold & cream tagline right as doors close together
+    if (curtainTagline) {
+      closerTl.to(
+        curtainTagline,
+        { y: 0, opacity: 1, ease: "power3.out", duration: 0.45 },
+        0.48
+      );
+    }
 
     // Pop in "Top ↑" button cleanly below curtain tagline
     if (toTopBtn) {
