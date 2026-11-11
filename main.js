@@ -62,7 +62,7 @@
 
     // Interactive element hover detection
     const interactives = document.querySelectorAll(
-      "a, button, .project-row, .award-card, .icard, .pf-strips img, .hero-collage img, .scroll-orb, .to-top"
+      "a, button, .project-row, .award-card, .icard, .pf-strips img, .hero-collage img, .scroll-orb, .to-top, .faq-question, .filter-pill, .contact-pill, .social-tag, .nav-drawer a, summary"
     );
     interactives.forEach((el) => {
       el.addEventListener("mouseenter", () => cursor.classList.add("is-hover"));

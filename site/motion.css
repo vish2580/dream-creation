@@ -20,16 +20,18 @@ html.lenis, html.lenis body {
   pointer-events: none;
 }
 
-/* ---------- Custom Red Cursor Follower ---------- */
+/* ---------- Custom Golden Aura Cursor Follower ---------- */
 .custom-cursor {
   position: fixed;
   top: 0;
   left: 0;
-  width: 16px;
-  height: 16px;
+  width: 32px;
+  height: 32px;
+  margin-left: -16px;
+  margin-top: -1px;
   pointer-events: none;
   z-index: 99999;
-  mix-blend-mode: difference;
+  mix-blend-mode: normal;
   transition: opacity 0.3s ease;
   opacity: 0;
 }
@@ -39,19 +41,21 @@ html.lenis, html.lenis body {
 .custom-cursor .cursor-dot {
   width: 100%;
   height: 100%;
-  background: #db0703;
+  background: radial-gradient(circle, rgba(250, 224, 130, 0.16) 0%, transparent 72%);
+  border: 1.5px solid rgba(250, 224, 130, 0.55);
   border-radius: 50%;
-  box-shadow: 0 0 16px rgba(219, 7, 3, 0.8);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease;
+  box-shadow: 0 0 18px rgba(212, 175, 55, 0.38);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
   will-change: transform;
 }
 .custom-cursor.is-hover .cursor-dot {
-  transform: scale(2.8);
-  background: #ffffff;
-  box-shadow: 0 0 24px rgba(255, 255, 255, 0.9);
+  transform: scale(1.45);
+  border-color: #ffd700;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.22) 0%, transparent 72%);
+  box-shadow: 0 0 26px rgba(255, 215, 0, 0.72);
 }
 .custom-cursor.is-active .cursor-dot {
-  transform: scale(1.6);
+  transform: scale(0.95);
 }
 @media (pointer: coarse) {
   .custom-cursor {
