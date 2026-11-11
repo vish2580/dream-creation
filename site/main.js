@@ -1022,52 +1022,90 @@
   }
 
   // ---------------------------------------------------------------------------
-  // 10. Gallery Scatter Band (3D Fly-Through Tunnel)
+  // 10. Gallery Scatter Band (3D Multi-Wave Fly-Through Tunnel - 24 Photos)
   // ---------------------------------------------------------------------------
   const gallery = document.querySelector(".gallery-band");
   const galleryImgs = gsap.utils.toArray(".gallery-scatter img");
   if (gallery && galleryImgs.length && !reduce) {
+    const isMobGallery = window.innerWidth <= 900;
+    const totalWaves = Math.ceil(galleryImgs.length / 8);
     const galleryTl = gsap.timeline({
       scrollTrigger: {
         trigger: ".gallery-band",
         pin: true,
         start: "top top",
-        end: "+=180%",
+        end: `+=${totalWaves * 95}%`,
         scrub: 1,
       },
     });
 
+    const galleryVw = window.innerWidth / 100;
+    const galleryVh = window.innerHeight / 100;
     const scatterCoords = [
-      { x: -32, y: -24, zStart: -600, zEnd: 400 },
-      { x: 18, y: -28, zStart: -450, zEnd: 550 },
-      { x: -16, y: 14, zStart: -300, zEnd: 650 },
-      { x: 32, y: 16, zStart: -500, zEnd: 500 },
-      { x: -36, y: 8, zStart: -400, zEnd: 600 },
-      { x: 8, y: -10, zStart: -700, zEnd: 350 },
-      { x: -12, y: -22, zStart: -550, zEnd: 450 },
-      { x: 26, y: -6, zStart: -350, zEnd: 700 },
+      { vx: -34, vy: -20, zStart: -700, zEnd: 380 },
+      { vx:  33, vy: -21, zStart: -580, zEnd: 480 },
+      { vx: -31, vy:  21, zStart: -520, zEnd: 540 },
+      { vx:  34, vy:  19, zStart: -650, zEnd: 440 },
+      { vx: -17, vy: -14, zStart: -820, zEnd: 320 },
+      { vx:  18, vy:  15, zStart: -760, zEnd: 360 },
+      { vx: -22, vy:   4, zStart: -600, zEnd: 460 },
+      { vx:  22, vy:  -5, zStart: -500, zEnd: 560 },
     ];
 
+    const spreadX = isMobGallery ? 0.72 : 1.0;
+    const spreadY = isMobGallery ? 0.85 : 1.0;
+
     galleryImgs.forEach((img, i) => {
-      const coord = scatterCoords[i % scatterCoords.length];
+      const wave = Math.floor(i / 8);
+      const slot = i % scatterCoords.length;
+      const coord = scatterCoords[slot];
+      const waveStart = wave * 0.31 + (slot * 0.01);
+      const waveDur = 0.42;
+      const isLastWave = wave === totalWaves - 1;
+
       gsap.set(img, {
-        xPercent: coord.x * 2.2,
-        yPercent: coord.y * 2.2,
+        xPercent: -50,
+        yPercent: -50,
+        x: coord.vx * spreadX * galleryVw,
+        y: coord.vy * spreadY * galleryVh,
         z: coord.zStart,
-        scale: 0.6,
-        opacity: 0.4,
+        scale: 0.48,
+        opacity: 0,
+        zIndex: 8 + slot,
       });
 
       galleryTl.to(
         img,
         {
           z: coord.zEnd,
-          scale: 1.25,
-          opacity: 1,
+          scale: isMobGallery ? 1.02 : 1.15,
+          duration: waveDur,
           ease: "none",
         },
-        0
+        waveStart
       );
+
+      galleryTl.to(
+        img,
+        {
+          opacity: 1,
+          duration: waveDur * 0.25,
+          ease: "power1.out",
+        },
+        waveStart
+      );
+
+      if (!isLastWave) {
+        galleryTl.to(
+          img,
+          {
+            opacity: 0,
+            duration: waveDur * 0.22,
+            ease: "power1.in",
+          },
+          waveStart + waveDur * 0.72
+        );
+      }
     });
   }
 
