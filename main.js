@@ -720,7 +720,10 @@
       if (videoWraps[i]) gsap.set(videoWraps[i], { clipPath: "inset(100% 0 0 0)" });
     }
 
-    // Ensure all card videos run continuously without stutter or pause
+    const posterVideos = gsap.utils.toArray(".soc-video-box video");
+    const allServiceVideos = [...cardVideos, ...posterVideos];
+
+    // Ensure all card & service-box videos run continuously without stutter or pause
     function startCardVideo(v) {
       if (!v) return;
       v.muted = true;
@@ -741,11 +744,16 @@
     }
 
     // Start all card videos immediately and when near viewport
-    cardVideos.forEach((v) => startCardVideo(v));
+    allServiceVideos.forEach((v) => startCardVideo(v));
     ScrollTrigger.create({
       trigger: ".services",
       start: "top 90%",
-      onEnter: () => cardVideos.forEach((v) => startCardVideo(v)),
+      onEnter: () => allServiceVideos.forEach((v) => startCardVideo(v)),
+    });
+    ScrollTrigger.create({
+      trigger: ".services-overview-grid",
+      start: "top 95%",
+      onEnter: () => posterVideos.forEach((v) => startCardVideo(v)),
     });
 
     const pinEndPercent = Math.max(240, (numSlides - 1) * 85 + 50);

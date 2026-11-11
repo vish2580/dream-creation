@@ -4,6 +4,8 @@ site/scratch/
 
 # Large screen recording files
 *.mp4
+!videos/*.mp4
+!site/videos/*.mp4
 
 # OS / Editor artifacts
 .DS_Store
