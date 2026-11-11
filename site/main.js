@@ -173,10 +173,40 @@
   let heroScrollTriggerInitialized = false;
   let introTl = null;
 
-  // Prepare layout IMMEDIATELY so nothing flashes or appears prematurely
+  // Prepare layout IMMEDIATELY so header stays visible and hero cards start clustered for reveal
+  const clusterHeroCardsToCenter = (startOpacity = 0) => {
+    const stageRect = stage ? stage.getBoundingClientRect() : { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight };
+    const cx = stageRect.width / 2;
+    const cy = stageRect.height / 2;
+    const count = heroCollageImgs.length || 1;
+
+    heroCollageImgs.forEach((img, i) => {
+      // Clear active inline x/y before measuring settled perimeter bounds
+      gsap.set(img, { x: 0, y: 0, scale: 1, rotation: 0 });
+      const ir = img.getBoundingClientRect();
+      const icx = ir.left - stageRect.left + ir.width / 2;
+      const icy = ir.top - stageRect.top + ir.height / 2;
+      const angle = (i / count) * Math.PI * 2;
+      const spreadRadiusX = isMobileHero ? 18 : 34;
+      const spreadRadiusY = isMobileHero ? 14 : 22;
+      const dx = cx - icx + Math.cos(angle) * spreadRadiusX;
+      const dy = cy - icy + Math.sin(angle) * spreadRadiusY;
+      const rot = cardRotations[i % cardRotations.length];
+
+      gsap.set(img, {
+        x: dx,
+        y: dy,
+        scale: 0.38,
+        rotation: rot * 2,
+        opacity: startOpacity,
+        zIndex: 10 + i,
+      });
+    });
+  };
+
   const prepareHeroState = () => {
-    // Hide header and all typography, kickers, meta, and buttons immediately
-    if (header) gsap.set(header, { opacity: 0, y: -20 });
+    // Keep Menu, Logo, and Book Now immediately visible on load with zero delay
+    if (header) gsap.set(header, { opacity: 1, y: 0 });
     if (storiesRow) gsap.set(storiesRow, { y: 35, opacity: 0 });
     if (youRow) gsap.set(youRow, { y: 45, opacity: 0 });
     if (stepRow) gsap.set(stepRow, { y: 55, opacity: 0 });
@@ -187,36 +217,17 @@
     if (scrollOrb) gsap.set(scrollOrb, { xPercent: -50, scale: 0, opacity: 0 });
     if (initialOrb) gsap.set(initialOrb, { opacity: 0, scale: 1 });
 
-    const rect = stage ? stage.getBoundingClientRect() : { width: window.innerWidth, height: window.innerHeight };
-    const cx = rect.width / 2;
-    const cy = rect.height / 2;
-
-    heroCollageImgs.forEach((img, i) => {
-      const ir = img.getBoundingClientRect();
-      const stageRect = stage ? stage.getBoundingClientRect() : { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight };
-      const icx = ir.left - stageRect.left + ir.width / 2;
-      const icy = ir.top - stageRect.top + ir.height / 2;
-      const dx = cx - icx;
-      const dy = cy - icy;
-      const rot = cardRotations[i % cardRotations.length];
-
-      // Pre-position in the center stack at zero opacity
-      gsap.set(img, {
-        x: dx,
-        y: dy,
-        scale: 1.15,
-        rotation: rot,
-        opacity: 0,
-        zIndex: 10 + i,
-      });
-    });
+    clusterHeroCardsToCenter(0);
   };
 
   prepareHeroState();
 
   const startHeroIntro = () => {
+    // Re-measure center cluster after preloader so every image lands together cleanly in the center
+    clusterHeroCardsToCenter(0);
+
     introTl = gsap.timeline({
-      delay: 0.04,
+      delay: 0.02,
       onComplete: () => {
         heroIntroCompleted = true;
         setupHeroMouseMovement();
@@ -224,62 +235,66 @@
       },
     });
 
-    // 1. Initial glowing red cosmic orb at top center
+    // 1. Optional glowing orb pulse
     if (initialOrb) {
-      introTl.to(initialOrb, { opacity: 1, duration: 0.22, ease: "power2.out" }, 0);
-      introTl.to(initialOrb, { scale: 1.25, repeat: 1, yoyo: true, duration: 0.2, ease: "power1.inOut" }, 0.1);
+      introTl.to(initialOrb, { opacity: 1, duration: 0.18, ease: "power2.out" }, 0);
+      introTl.to(initialOrb, { scale: 1.25, repeat: 1, yoyo: true, duration: 0.18, ease: "power1.inOut" }, 0.08);
     }
 
-    // 2. PHASE 1: FIRST IMAGES SHOWN TOGETHER in center stack!
-    // Reveal all images in the center stack together at opacity 1
-    introTl.set(heroCollageImgs, { opacity: 1 }, 0.05);
+    if (heroCollageImgs.length) {
+      const centerOpacity = isMobileHero ? 0.92 : 1;
+      const settledOpacity = isMobileHero ? 0.8 : 1;
 
-    // Dynamic flip & fanned shuffle establishing the photo collection together
-    heroCollageImgs.forEach((img, idx) => {
-      const rot = cardRotations[idx % cardRotations.length];
-      introTl.fromTo(
-        img,
-        { scale: 1.22, rotation: rot * 1.6 },
-        { scale: 1.15, rotation: rot, duration: 0.18, ease: "power2.out" },
-        0.05 + idx * 0.03
-      );
-    });
-
-    // Visible tactile pause so the user clearly absorbs all images together
-    introTl.to({}, { duration: 0.45 });
-
-    // 3. PHASE 2: ALL TOGETHER FLOW OUTWARD to settled perimeter positions
-    introTl.to(
-      heroCollageImgs,
-      {
-        x: 0,
-        y: 0,
-        rotation: 0,
-        scale: 1,
-        duration: 0.9,
-        stagger: {
-          each: 0.03,
-          from: "center",
+      // 2. PHASE 1 (AFTER TIMER): ALL IMAGES COME TOGETHER IN THE CENTER CLUSTER
+      introTl.to(
+        heroCollageImgs,
+        {
+          opacity: centerOpacity,
+          scale: 1.15,
+          rotation: (i) => cardRotations[i % cardRotations.length],
+          duration: 0.45,
+          stagger: 0.015,
+          ease: "back.out(1.45)",
         },
-        ease: "power3.out",
-      },
-      "+=0.04"
-    );
+        0
+      );
 
-    // Reset collage images to background z-index so typography is 100% unobstructed
-    introTl.set(heroCollageImgs, { zIndex: (i) => 2 + i }, "-=0.15");
+      // Pause briefly so all gathered center images are clearly seen together before spreading
+      introTl.to({}, { duration: 0.42 });
 
-    // 4. PHASE 3: ONLY AFTER IMAGES HAVE SETTLED OUTWARD -> TEXT COMES IN!
+      // 3. PHASE 2: ALL IMAGES SPREAD OUTWARD TO PERIMETER SLOTS
+      introTl.to(
+        heroCollageImgs,
+        {
+          x: 0,
+          y: 0,
+          rotation: 0,
+          scale: 1,
+          opacity: settledOpacity,
+          duration: 0.85,
+          stagger: {
+            each: 0.025,
+            from: "center",
+          },
+          ease: "power3.out",
+        }
+      );
+
+      // Reset collage z-index behind hero typography once spread completes
+      introTl.set(heroCollageImgs, { zIndex: (i) => 2 + i });
+    }
+
+    // 4. PHASE 3: ONLY AFTER IMAGES SPREAD -> HERO TEXT COMES IN
     introTl.to(
       [storiesRow, youRow, stepRow],
       {
         y: 0,
         opacity: 1,
-        duration: 0.7,
-        stagger: 0.1,
+        duration: 0.65,
+        stagger: 0.09,
         ease: "power3.out",
       },
-      "+=0.05"
+      heroCollageImgs.length ? "+=0.02" : 0
     );
 
     introTl.to(
@@ -287,25 +302,12 @@
       {
         y: 0,
         opacity: 1,
-        duration: 0.55,
-        stagger: 0.06,
+        duration: 0.5,
+        stagger: 0.05,
         ease: "power2.out",
       },
-      "-=0.4"
+      "-=0.35"
     );
-
-    if (header) {
-      introTl.to(
-        header,
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.5,
-          ease: "power2.out",
-        },
-        "-=0.4"
-      );
-    }
 
     // 5. Initial orb glides down into scroll-orb button position
     if (initialOrb && scrollOrb) {
@@ -349,21 +351,25 @@
       introTl.to(scrollOrb, { xPercent: -50, scale: 1, opacity: 1, duration: 0.45, ease: "back.out(1.8)" }, "-=0.25");
     }
 
-    if (skipPreloader) {
+    if (skipPreloader || reduce) {
       introTl.progress(1);
     }
   };
 
-  // Skip or fast-forward if user wheels/scrolls early
+  // Skip or fast-forward if user wheels or swipes early
+  const skipHeroIntroOnScroll = () => {
+    if (introTl && !heroIntroCompleted) {
+      introTl.progress(1);
+    }
+  };
   window.addEventListener(
     "wheel",
     (e) => {
-      if (e.deltaY > 5 && introTl && !heroIntroCompleted) {
-        introTl.progress(1);
-      }
+      if (e.deltaY > 5) skipHeroIntroOnScroll();
     },
     { passive: true }
   );
+  window.addEventListener("touchmove", skipHeroIntroOnScroll, { passive: true });
 
   const urlParams = new URLSearchParams(window.location.search);
   const skipPreloader = urlParams.get("skip_preloader") === "1";
@@ -376,7 +382,7 @@
 
     gsap.to(obj, {
       count: 100,
-      duration: 0.9,
+      duration: 0.75,
       ease: "power2.out",
       onUpdate: () => {
         if (countEl) countEl.textContent = Math.round(obj.count);
@@ -393,7 +399,7 @@
           exitTl.to(countEl, {
             scale: 0.5,
             opacity: 0,
-            duration: 0.3,
+            duration: 0.22,
             ease: "power2.in",
           });
         }
@@ -404,26 +410,26 @@
             leftCurtain,
             {
               xPercent: -100,
-              duration: 1.1,
-              ease: "power3.inOut",
+              duration: 0.65,
+              ease: "power2.inOut",
             },
-            "-=0.08"
+            "-=0.05"
           );
           exitTl.to(
             rightCurtain,
             {
               xPercent: 100,
-              duration: 1.1,
-              ease: "power3.inOut",
+              duration: 0.65,
+              ease: "power2.inOut",
             },
             "<"
           );
         } else {
-          exitTl.to(preloader, { opacity: 0, duration: 0.4 });
+          exitTl.to(preloader, { opacity: 0, duration: 0.35 });
         }
 
-        // 3. Start hero cosmic intro explosion as curtains part
-        exitTl.call(startHeroIntro, null, "-=0.8");
+        // 3. Start hero choreography once curtains have cleared the center stage
+        exitTl.call(startHeroIntro, null, "-=0.18");
       },
     });
   } else {
@@ -540,7 +546,7 @@
   // 5. Hero ScrollTrigger Pinned Scrub & Split (0:10 to 0:12 in video)
   // ---------------------------------------------------------------------------
   function setupHeroScrollTrigger() {
-    if (heroScrollTriggerInitialized || reduce) return;
+    if (heroScrollTriggerInitialized || reduce || !document.querySelector(".hero")) return;
     heroScrollTriggerInitialized = true;
 
     // Ensure elements are cleanly settled before recording ScrollTrigger initial values
@@ -554,6 +560,7 @@
         start: "top top",
         end: "+=130%",
         scrub: 1,
+        refreshPriority: 10,
         invalidateOnRefresh: true,
       },
     });
@@ -595,12 +602,9 @@
       ease: "power1.in",
     }, 0.75);
 
+    ScrollTrigger.sort();
     ScrollTrigger.refresh();
-  };
-
-  // ---------------------------------------------------------------------------
-    // Initialize Hero ScrollTrigger first so page pin spacers are registered in exact DOM order
-  setupHeroScrollTrigger();
+  }
 
   // ---------------------------------------------------------------------------
   // 6. Tagline / Manifesto Section (Pinned Line-by-Line Scroll Scrub Animation)
